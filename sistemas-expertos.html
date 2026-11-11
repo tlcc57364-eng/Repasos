@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistemas Expertos — Repasos</title>
+  <meta name="description" content="Quiz de repaso de Sistemas Expertos: 25 preguntas de la preevaluación y práctica extra sobre ML, Prolog, REST y Serverless.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23000'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Impact,sans-serif' font-size='40' fill='%23d1ffca'>R</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="index.html">Repasos</a>
+    <nav class="pill" aria-label="Principal">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#materias">Materias</a>
+      <a href="sistemas-expertos.html" aria-current="page">Sistemas Expertos</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="crumbs mono-label">
+      <a href="index.html">Repasos</a><span>/</span><span>Sistemas Expertos</span>
+    </div>
+
+    <div class="subhead">
+      <div>
+        <span class="tag">Materia 01 · Preevaluación</span>
+        <h1 class="display" style="margin-top:24px">Sistemas<br>Expertos</h1>
+      </div>
+      <div class="stats">
+        <div class="stat dark"><span class="mono-label">Examen</span><b id="st-exam">25</b></div>
+        <div class="stat"><span class="mono-label">Extra</span><b id="st-extra">0</b></div>
+        <div class="stat"><span class="mono-label">Mejor</span><b id="st-best">—</b></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <nav class="pill" role="tablist" aria-label="Banco de preguntas" id="banks"></nav>
+      <nav class="pill" role="tablist" aria-label="Modo" id="modes">
+        <button role="tab" data-mode="quiz">Quiz</button>
+        <button role="tab" data-mode="study">Estudio</button>
+        <button role="tab" data-mode="summary">Resumen</button>
+      </nav>
+    </div>
+
+    <div class="toolbar" style="margin-top:16px" id="opts-bar">
+      <p class="bank-desc" id="bank-desc" style="margin:0"></p>
+      <div class="modes">
+        <label class="switch"><input type="checkbox" id="opt-shuffle" checked> Mezclar preguntas</label>
+        <label class="switch" id="flag-wrap"><input type="checkbox" id="opt-flagged"> <span class="dot"></span> Solo las que fallé</label>
+      </div>
+    </div>
+
+    <div id="view"></div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Repasos · Sistemas Expertos</span>
+      <span class="mono">Teclas: 1–4 / A–D para responder · Enter para seguir</span>
+    </div>
+  </footer>
+
+  <script src="assets/data/sistemas-expertos.js"></script>
+  <script src="assets/quiz.js"></script>
+</body>
+</html>

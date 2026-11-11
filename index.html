@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Repasos — 10.º semestre</title>
+  <meta name="description" content="Repasos tipo quiz para las materias del décimo semestre: Sistemas Expertos, Inteligencia Artificial, Computación Móvil, Legislación Informática y Gerencia de Proyectos de Software.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23000'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Impact,sans-serif' font-size='40' fill='%23d1ffca'>R</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="index.html">Repasos</a>
+    <nav class="pill" aria-label="Principal">
+      <a href="index.html" aria-current="page">Inicio</a>
+      <a href="#materias">Materias</a>
+      <a href="sistemas-expertos.html">Sistemas Expertos</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div>
+        <span class="tag">10.º semestre · Preevaluaciones</span>
+        <h1 class="display" style="margin-top:24px">Repasa.<br>Responde.<br>Aprueba.</h1>
+        <p class="lead">Bancos de preguntas tipo quiz por materia. Respondes pregunta por pregunta, ves al instante si acertaste y por qué.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+          <a class="btn" href="sistemas-expertos.html">Empezar con Sistemas Expertos →</a>
+          <a class="btn ghost" href="#materias">Ver materias</a>
+        </div>
+      </div>
+      <div class="cubes" aria-hidden="true">
+        <div class="cube b">SE</div>
+        <div class="cube m">IA</div>
+        <div class="cube s">Móvil</div>
+        <div class="cube y">Ley</div>
+        <div class="cube">GPS</div>
+        <div class="cube e">+</div>
+      </div>
+    </div>
+
+    <section id="materias">
+      <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px">
+        <h2 class="display-md">Materias</h2>
+        <span class="mono-label">5 materias · 1 disponible</span>
+      </div>
+
+      <div class="grid">
+        <a class="card dark subject" href="sistemas-expertos.html">
+          <div class="top">
+            <span class="tag">Disponible</span>
+            <span class="mono-label" style="color:var(--smoke)">01</span>
+          </div>
+          <div>
+            <h3>Sistemas<br>Expertos</h3>
+            <p>25 preguntas del examen + 28 de práctica extra. SE, Machine Learning, Prolog, REST y Serverless.</p>
+          </div>
+          <span class="go">Abrir repaso →</span>
+        </a>
+
+        <div class="card subject off">
+          <div class="top">
+            <span class="tag ghost">Próximamente</span>
+            <span class="mono-label">02</span>
+          </div>
+          <div>
+            <h3>Inteligencia<br>Artificial</h3>
+            <p>Banco de preguntas en preparación.</p>
+          </div>
+          <span class="go muted">En camino</span>
+        </div>
+
+        <div class="card subject off">
+          <div class="top">
+            <span class="tag ghost">Próximamente</span>
+            <span class="mono-label">03</span>
+          </div>
+          <div>
+            <h3>Computación<br>Móvil</h3>
+            <p>Banco de preguntas en preparación.</p>
+          </div>
+          <span class="go muted">En camino</span>
+        </div>
+
+        <div class="card subject off">
+          <div class="top">
+            <span class="tag ghost">Próximamente</span>
+            <span class="mono-label">04</span>
+          </div>
+          <div>
+            <h3>Legislación<br>Informática</h3>
+            <p>Banco de preguntas en preparación.</p>
+          </div>
+          <span class="go muted">En camino</span>
+        </div>
+
+        <div class="card mist subject">
+          <div class="top">
+            <span class="tag volt">Ganada ✓</span>
+            <span class="mono-label">05</span>
+          </div>
+          <div>
+            <h3>Gerencia de<br>Proyectos</h3>
+            <p>Gerencia de Proyectos de Software ya está aprobada. Sin repaso por ahora.</p>
+          </div>
+          <span class="go muted">—</span>
+        </div>
+
+        <div class="card subject" style="background:transparent;border:1.5px dashed var(--ash)">
+          <div class="top"><span class="mono-label">+</span></div>
+          <div>
+            <h3 style="color:var(--smoke)">Más<br>repasos</h3>
+            <p>Cada materia nueva se agrega como su propia página.</p>
+          </div>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="card dark arc" style="padding:64px 40px 40px">
+        <span class="mono-label" style="color:var(--smoke)">Cómo funciona</span>
+        <h2 class="display-md" style="margin:16px 0 40px">Tres formas de repasar</h2>
+        <div class="how">
+          <div class="card" style="background:var(--graphite);color:var(--white)">
+            <span class="num">01</span>
+            <h4>Quiz</h4>
+            <p style="color:var(--smoke)">Una pregunta a la vez, con corrección inmediata, explicación y puntaje al final.</p>
+          </div>
+          <div class="card" style="background:var(--graphite);color:var(--white)">
+            <span class="num">02</span>
+            <h4>Estudio</h4>
+            <p style="color:var(--smoke)">Todas las preguntas en lista, con la respuesta correcta resaltada para leer de corrido.</p>
+          </div>
+          <div class="card" style="background:var(--graphite);color:var(--white)">
+            <span class="num">03</span>
+            <h4>Resumen</h4>
+            <p style="color:var(--smoke)">Tabla de conceptos clave para la última pasada antes del examen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Repasos · Décimo semestre</span>
+      <span class="mono">Hecho para estudiar, no para copiar.</span>
+    </div>
+  </footer>
+</body>
+</html>
