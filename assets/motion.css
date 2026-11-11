@@ -1,0 +1,165 @@
+/* =========================================================
+   Motion — capa de animación del sistema Repasos
+   Tokens: ease expo-out, 0.15s micro, 0.28s UI, 0.55–0.6s entradas,
+   stagger 80ms, rise 10px, mask 105%, resolve scale(.985).
+   Todo depende de <html class="js">: sin JS la página queda estática.
+   ========================================================= */
+:root {
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-sine: cubic-bezier(.445, .05, .55, .95);
+  --ease-quart: cubic-bezier(.165, .84, .44, 1);
+  --t-micro: .15s;
+  --t-ui: .28s;
+  --t-in: .55s;
+  --stagger: 80ms;
+  --intro: .45s; /* tiempo que tarda la cortina en abrirse */
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes mh-maskUp   { from { transform: translateY(105%); } to { transform: translateY(0); } }
+@keyframes mh-rise     { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes mh-resolve  { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes mh-hold     { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 241, 0, 0); } 50% { box-shadow: 0 0 0 8px rgba(255, 241, 0, .45); } }
+@keyframes site-out    { from { transform: translateY(0); border-radius: 0; } to { transform: translateY(-100%); border-radius: 0 0 64px 64px; } }
+@keyframes site-cover  { from { transform: translateY(100%); border-radius: 64px 64px 0 0; } to { transform: translateY(0); border-radius: 0; } }
+@keyframes spin        { to { transform: rotate(360deg); } }
+@keyframes spin-ccw    { to { transform: rotate(-360deg); } }
+@keyframes pulse       { from { transform: scale(1); opacity: .9; } to { transform: scale(1.9); opacity: 0; } }
+@keyframes blink       { 0%, 100% { opacity: 1; } 50% { opacity: .15; } }
+@keyframes slideright  { from { transform: translateX(-100%); } to { transform: translateX(200%); } }
+@keyframes shake       { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+@keyframes float       { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes dashoffset  { to { stroke-dashoffset: 0; } }
+
+/* ---------- Cortina de entrada / salida ---------- */
+.site-in { display: none; }
+.js .site-in {
+  display: grid; place-items: center;
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--black);
+  animation: site-out .7s var(--ease) .2s both;
+  pointer-events: none;
+}
+.js .site-in.cover { animation: site-cover .45s var(--ease) both; pointer-events: all; }
+.site-in .spinner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, .12);
+  border-top-color: var(--volt);
+  animation: spin .7s linear infinite;
+}
+.site-in .spinner + .label {
+  position: absolute; bottom: 40px; left: 0; right: 0; text-align: center;
+  font-family: var(--f-mono); font-size: 12px; color: var(--smoke); text-transform: uppercase;
+}
+
+/* ---------- Titular por líneas con máscara ---------- */
+.line { display: block; overflow: hidden; padding-bottom: .04em; margin-bottom: -.04em; }
+.line > span { display: block; }
+.js .line > span { animation: mh-maskUp var(--t-in) var(--ease) backwards; animation-delay: calc(var(--intro) + .15s + var(--i, 0) * var(--stagger)); }
+
+/* ---------- Bloques de entrada del hero ---------- */
+.js [data-rise]    { animation: mh-rise var(--t-in) var(--ease) backwards;    animation-delay: calc(var(--intro) + .35s + var(--i, 0) * var(--stagger)); }
+.js [data-resolve] { animation: mh-resolve .6s var(--ease) backwards; transform-origin: left center; animation-delay: calc(var(--intro) + .5s + var(--i, 0) * var(--stagger)); }
+
+/* ---------- Revelado al hacer scroll ---------- */
+.js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .6s var(--ease); transition-delay: calc(var(--i, 0) * var(--stagger)); }
+.js [data-reveal].in { opacity: 1; transform: none; }
+
+/* Paneles que suben y tapan el bloque anterior */
+.js [data-panel] { transform: translateY(120px) scale(.97); transform-origin: 50% 0; transition: transform 1s var(--ease), border-radius 1s var(--ease); }
+.js [data-panel].in { transform: none; }
+
+/* ---------- Botones: hover-loop (el texto rueda en diagonal) ---------- */
+.btn { transition: background-color var(--t-micro) var(--ease), color var(--t-micro) var(--ease), border-color var(--t-micro) var(--ease), transform var(--t-micro) var(--ease); }
+.btn:not(:disabled):active { transform: scale(.98); }
+.hl { position: relative; display: inline-block; overflow: hidden; vertical-align: top; }
+.hl-a, .hl-b { display: block; transition: transform .45s var(--ease); }
+.hl-b { position: absolute; inset: 0; transform: translate(-100%, 100%); }
+.btn:not(:disabled):hover .hl-a, .btn:not(:disabled):focus-visible .hl-a { transform: translate(100%, -100%); }
+.btn:not(:disabled):hover .hl-b, .btn:not(:disabled):focus-visible .hl-b { transform: translate(0, 0); }
+.arr { display: inline-block; transition: transform var(--t-micro) var(--ease); }
+.btn:not(:disabled):hover .arr.r { transform: translateX(4px); }
+.btn:not(:disabled):hover .arr.l { transform: translateX(-4px); }
+
+/* Botón "Siguiente" esperando: halo amarillo que respira */
+.btn.wait { animation: mh-hold 1.6s var(--ease-sine) infinite; }
+
+/* ---------- Nav ---------- */
+.pill a, .pill button { position: relative; transition: background-color var(--t-ui) var(--ease), color .2s var(--ease-sine); }
+.pill a::after, .pill button::after {
+  content: ""; position: absolute; left: 50%; bottom: 5px; width: 3px; height: 3px; margin-left: -1.5px;
+  border-radius: 50%; background: currentColor; opacity: 0; transition: opacity .2s var(--ease-sine);
+}
+.pill a:hover::after, .pill button:hover::after { opacity: 1; }
+.pill [aria-current="page"]::after, .pill [aria-selected="true"]::after { opacity: 0; }
+
+/* ---------- Tarjetas y piezas del inicio ---------- */
+.subject { transition: transform var(--t-ui) var(--ease), background-color var(--t-ui) var(--ease); }
+.subject .go { transition: gap var(--t-ui) var(--ease); }
+a.subject:hover .go { gap: 14px; }
+.cube { transition: transform var(--t-ui) var(--ease), border-radius var(--t-ui) var(--ease); }
+.cube:hover { transform: translateY(-6px) rotate(-2deg); border-radius: 32px; }
+.cube.e { position: relative; }
+.cube .ring { position: absolute; inset: 22%; border-radius: 50%; border: 1.5px dashed var(--ash); animation: spin 14s linear infinite; }
+.cube .ring.ccw { inset: 34%; animation: spin-ccw 9s linear infinite; border-color: var(--smoke); }
+.cube .ping { position: absolute; top: 14px; right: 14px; width: 10px; height: 10px; border-radius: 50%; background: var(--volt); }
+.cube.y .ping { background: var(--black); }
+.cube .ping::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: pulse 1.6s var(--ease) infinite; }
+
+/* Indicador "LIVE" */
+.live { width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: inline-block; animation: blink 1.4s var(--ease-sine) infinite; }
+
+/* ---------- Quiz ---------- */
+#view.view-in > * { animation: mh-rise .45s var(--ease) backwards; }
+.qcard.enter .qmeta   { animation: mh-rise .45s var(--ease) backwards; }
+.qcard.enter .qtext   { animation: mh-rise var(--t-in) var(--ease) .06s backwards; }
+.qcard.enter .opt     { animation: mh-rise .5s var(--ease) backwards; animation-delay: calc(.14s + var(--i, 0) * 60ms); }
+.qcard.enter .qnav, .qcard.enter .dots { animation: mh-rise .5s var(--ease) .4s backwards; }
+
+.opt { transition: background-color var(--t-ui) var(--ease), border-color var(--t-ui) var(--ease), color var(--t-ui) var(--ease), opacity var(--t-ui) var(--ease), transform var(--t-micro) var(--ease); }
+.opt:not(:disabled):hover { transform: translateX(4px); }
+.opt:not(:disabled):active { transform: scale(.99); }
+.opt .k { position: relative; transition: background-color var(--t-ui) var(--ease), color var(--t-ui) var(--ease); }
+.qcard.just .opt.wrong { animation: shake .4s var(--ease); }
+.qcard.just .opt.correct .k::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--black); animation: pulse .7s var(--ease) 2; }
+.qcard.just .feedback.show { animation: mh-rise var(--t-ui) var(--ease) backwards; }
+.qcard.just .opt .mark { animation: mh-rise var(--t-ui) var(--ease) backwards; }
+
+.progress span { position: relative; overflow: hidden; transition: width .6s var(--ease); }
+.progress span::after { content: ""; position: absolute; inset: 0; width: 50%; background: linear-gradient(90deg, transparent, rgba(255, 241, 0, .9), transparent); animation: slideright 1.8s var(--ease-sine) infinite; }
+
+.dots button { transition: background-color var(--t-ui) var(--ease), color var(--t-ui) var(--ease), transform var(--t-micro) var(--ease); }
+.dots button:hover { transform: translateY(-2px); }
+.qcard.just .dots button.cur { animation: mh-resolve var(--t-ui) var(--ease); }
+
+/* Resultados */
+.results .big { overflow: hidden; }
+.results .big > span { display: inline-block; animation: mh-maskUp .7s var(--ease) backwards; }
+.results .h2, .results p, .results .row { animation: mh-rise var(--t-in) var(--ease) backwards; animation-delay: .25s; }
+.review .item { animation: mh-rise .5s var(--ease) backwards; animation-delay: calc(.3s + var(--i, 0) * 60ms); }
+
+/* Estudio */
+.study details { transition: background-color var(--t-ui) var(--ease); }
+.study details:hover { background: #fafafa; }
+.study details[open] .body { animation: mh-rise var(--t-ui) var(--ease) backwards; }
+.study .plus { transition: transform var(--t-ui) var(--ease); }
+.study details.in { transition-delay: 0s; }
+
+/* Resumen */
+.summary tbody tr { animation: mh-rise .45s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 40ms); }
+.summary tbody tr td { transition: background-color var(--t-micro) var(--ease); }
+.summary tbody tr:hover td { background: var(--mist); }
+
+/* Stats / switches */
+.stat { transition: transform var(--t-ui) var(--ease); }
+.stat:hover { transform: translateY(-3px); }
+.switch { transition: background-color var(--t-ui) var(--ease); }
+.switch:hover { background: var(--mist); }
+
+/* ---------- Movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .site-in { display: none !important; }
+  .js [data-reveal], .js [data-panel], .js [data-rise], .js [data-resolve], .js .line > span { opacity: 1 !important; transform: none !important; }
+}

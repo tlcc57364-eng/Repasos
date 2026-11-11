@@ -44,11 +44,12 @@
 
   // ---- encabezado ----
   function renderStats() {
-    $("#st-exam").textContent = DATA.banks.examen ? DATA.banks.examen.questions.length : "—";
-    $("#st-extra").textContent = DATA.banks.extra ? DATA.banks.extra.questions.length : "—";
+    var M = window.Motion;
+    function put(el, n, suf) { if (n == null) { el.textContent = "—"; return; } if (M) M.count(el, n, suf); else el.textContent = n + (suf || ""); }
+    put($("#st-exam"), DATA.banks.examen ? DATA.banks.examen.questions.length : null);
+    put($("#st-extra"), DATA.banks.extra ? DATA.banks.extra.questions.length : null);
     var best = load().best || {};
-    var b = best[state.bank];
-    $("#st-best").textContent = b != null ? b + "%" : "—";
+    put($("#st-best"), best[state.bank], "%");
   }
 
   function renderBankTabs() {
@@ -100,6 +101,9 @@
 
     var it = s.items[s.cur];
     var q = bank().questions[it.qi];
+    var enter = s.shown !== s.cur;
+    s.shown = s.cur;
+    var just = state.just; state.just = false;
     var answered = it.chosen !== null;
     var ok = answered && it.chosen === q.answer;
     var nOk = s.items.filter(function (x) { return x.chosen !== null && x.chosen === bank().questions[x.qi].answer; }).length;
@@ -112,7 +116,7 @@
         else if (oi === it.chosen) { cls += " wrong"; mark = "Tu respuesta"; }
         else cls += " dim";
       }
-      return '<button class="' + cls + '" data-oi="' + oi + '"' + (answered ? " disabled" : "") + ">" +
+      return '<button class="' + cls + '" style="--i:' + pos + '" data-oi="' + oi + '"' + (answered ? " disabled" : "") + ">" +
         '<span class="k">' + LETTERS[pos] + "</span>" +
         "<span>" + fmt(q.options[oi], q.code) + "</span>" +
         '<span class="mark">' + mark + "</span></button>";
@@ -128,7 +132,7 @@
     var last = s.cur === s.items.length - 1;
     view.innerHTML =
       '<div class="quiz">' +
-        '<article class="card qcard">' +
+        '<article class="card qcard' + (enter ? " enter" : "") + (just ? " just" : "") + '">' +
           '<div class="qmeta">' +
             '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
               '<span class="tag dark">' + (s.cur + 1) + " / " + s.items.length + "</span>" +
@@ -154,19 +158,24 @@
             '<span class="kbd-hint">1–' + q.options.length + " responder · Enter seguir</span>" +
             '<div class="right">' +
               '<button class="btn ghost" data-act="restart">Reiniciar</button>' +
-              '<button class="btn" data-act="next"' + (answered ? "" : " disabled") + ">" +
+              '<button class="btn' + (answered ? " wait" : "") + '" data-act="next"' + (answered ? "" : " disabled") + ">" +
                 (last ? "Ver resultado →" : "Siguiente →") + "</button>" +
             "</div>" +
           "</div>" +
           '<div class="dots">' + dots + "</div>" +
         "</article>" +
       "</div>";
+    motion();
+    if (just) { var nb = view.querySelector('[data-act="next"]'); if (nb) nb.focus({ preventScroll: true }); }
   }
+
+  function motion() { if (window.Motion) { window.Motion.enhance(view); window.Motion.observe(view); } }
 
   function answer(oi) {
     var it = state.session.items[state.session.cur];
     if (it.chosen !== null) return;
     it.chosen = oi;
+    state.just = true;
     renderQuiz();
   }
 
@@ -202,9 +211,9 @@
     var pct = Math.round((okN / s.items.length) * 100);
     var verdict = pct >= 90 ? "Listo para el examen." : pct >= 70 ? "Vas bien, repasa las falladas." : pct >= 50 ? "A medio camino. Otra vuelta." : "Toca repasar con calma.";
 
-    var review = wrong.map(function (x) {
+    var review = wrong.map(function (x, k) {
       var q = qs[x.qi];
-      return '<div class="item">' +
+      return '<div class="item" style="--i:' + Math.min(k, 12) + '">' +
         '<span class="mono-label">' + esc(q.topic || "") + "</span>" +
         '<p style="font-weight:500">' + esc(q.q) + "</p>" +
         '<p class="mine">' + fmt(q.options[x.chosen], q.code) + "</p>" +
@@ -216,7 +225,7 @@
       '<div class="quiz">' +
         '<div class="card dark results">' +
           '<span class="mono-label" style="color:var(--smoke)">Resultado · ' + esc(bank().title) + (s.partial ? " (parcial)" : "") + "</span>" +
-          '<div class="big" style="margin-top:16px">' + pct + "%</div>" +
+          '<div class="big" style="margin-top:16px"><span id="big-pct">0%</span></div>' +
           '<p class="h2" style="margin-top:16px">' + okN + " de " + s.items.length + " correctas</p>" +
           '<p style="color:var(--smoke);margin:8px 0 0">' + verdict + "</p>" +
           '<div class="row">' +
@@ -229,6 +238,9 @@
           ? '<section style="margin-top:40px"><h2 class="h2">Para repasar</h2><div class="review">' + review + "</div></section>"
           : '<div class="card" style="margin-top:16px"><p class="h2">Sin errores. 🎯</p></div>') +
       "</div>";
+    var big = $("#big-pct");
+    if (window.Motion) window.Motion.count(big, pct, "%", 1200); else big.textContent = pct + "%";
+    motion();
   }
 
   // ---- modo estudio ----
@@ -252,18 +264,22 @@
             return '<li class="' + (oi === q.answer ? "ok" : "") + '">' + (oi === q.answer ? "✓ " : "") + fmt(o, q.code) + "</li>";
           }).join("") + "</ul><p>" + esc(q.exp) + "</p></div></details>";
       }).join("") + "</div>";
+    motion();
   }
 
   // ---- resumen ----
   function renderSummary() {
     view.innerHTML =
       '<div class="card summary"><table><thead><tr><th>Concepto</th><th>Idea central</th></tr></thead><tbody>' +
-      DATA.summary.map(function (r) { return "<tr><td>" + esc(r[0]) + "</td><td>" + esc(r[1]) + "</td></tr>"; }).join("") +
+      DATA.summary.map(function (r, k) { return '<tr style="--i:' + k + '"><td>' + esc(r[0]) + "</td><td>" + esc(r[1]) + "</td></tr>"; }).join("") +
       "</tbody></table></div>";
+    motion();
   }
 
   function render() {
     renderBankTabs();
+    view.classList.remove("view-in"); void view.offsetWidth; view.classList.add("view-in");
+    if (state.session) state.session.shown = state.session.cur; // ya anima view-in
     if (state.mode === "quiz") renderQuiz();
     else if (state.mode === "study") renderStudy();
     else renderSummary();

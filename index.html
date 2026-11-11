@@ -10,8 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/motion.css">
+  <script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
+  <div class="site-in" aria-hidden="true"><span class="spinner"></span><span class="label">Repasos</span></div>
   <header class="wrap nav">
     <a class="brand" href="index.html">Repasos</a>
     <nav class="pill" aria-label="Principal">
@@ -24,34 +27,34 @@
   <main class="wrap">
     <div class="hero">
       <div>
-        <span class="tag">10.º semestre · Preevaluaciones</span>
-        <h1 class="display" style="margin-top:24px">Repasa.<br>Responde.<br>Aprueba.</h1>
-        <p class="lead">Bancos de preguntas tipo quiz por materia. Respondes pregunta por pregunta, ves al instante si acertaste y por qué.</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+        <span class="tag" data-rise style="--i:-3"><span class="live"></span>10.º semestre · Preevaluaciones</span>
+        <h1 class="display" style="margin-top:24px" aria-label="Repasa. Responde. Aprueba."><span class="line" aria-hidden="true"><span style="--i:0">Repasa.</span></span><span class="line" aria-hidden="true"><span style="--i:1">Responde.</span></span><span class="line" aria-hidden="true"><span style="--i:2">Aprueba.</span></span></h1>
+        <p class="lead" data-rise>Bancos de preguntas tipo quiz por materia. Respondes pregunta por pregunta, ves al instante si acertaste y por qué.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px;--i:1" data-rise>
           <a class="btn" href="sistemas-expertos.html">Empezar con Sistemas Expertos →</a>
           <a class="btn ghost" href="#materias">Ver materias</a>
         </div>
       </div>
       <div class="cubes" aria-hidden="true">
-        <div class="cube b">SE</div>
-        <div class="cube m">IA</div>
-        <div class="cube s">Móvil</div>
-        <div class="cube y">Ley</div>
-        <div class="cube">GPS</div>
-        <div class="cube e">+</div>
+        <div class="cube b" data-resolve style="--i:0">SE</div>
+        <div class="cube m" data-resolve style="--i:1"><span class="ping"></span>IA</div>
+        <div class="cube s" data-resolve style="--i:2">Móvil</div>
+        <div class="cube y" data-resolve style="--i:3"><span class="ping"></span>Ley</div>
+        <div class="cube" data-resolve style="--i:4">GPS</div>
+        <div class="cube e" data-resolve style="--i:5"><span class="ring"></span><span class="ring ccw"></span>+</div>
       </div>
     </div>
 
     <section id="materias">
       <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px">
-        <h2 class="display-md">Materias</h2>
-        <span class="mono-label">5 materias · 1 disponible</span>
+        <h2 class="display-md" data-reveal>Materias</h2>
+        <span class="mono-label" data-reveal style="--i:1">5 materias · 1 disponible</span>
       </div>
 
       <div class="grid">
-        <a class="card dark subject" href="sistemas-expertos.html">
+        <a class="card dark subject" href="sistemas-expertos.html" data-reveal style="--i:0">
           <div class="top">
-            <span class="tag">Disponible</span>
+            <span class="tag"><span class="live"></span>Disponible</span>
             <span class="mono-label" style="color:var(--smoke)">01</span>
           </div>
           <div>
@@ -61,7 +64,7 @@
           <span class="go">Abrir repaso →</span>
         </a>
 
-        <div class="card subject off">
+        <div class="card subject off" data-reveal style="--i:1">
           <div class="top">
             <span class="tag ghost">Próximamente</span>
             <span class="mono-label">02</span>
@@ -73,7 +76,7 @@
           <span class="go muted">En camino</span>
         </div>
 
-        <div class="card subject off">
+        <div class="card subject off" data-reveal style="--i:2">
           <div class="top">
             <span class="tag ghost">Próximamente</span>
             <span class="mono-label">03</span>
@@ -85,7 +88,7 @@
           <span class="go muted">En camino</span>
         </div>
 
-        <div class="card subject off">
+        <div class="card subject off" data-reveal style="--i:0">
           <div class="top">
             <span class="tag ghost">Próximamente</span>
             <span class="mono-label">04</span>
@@ -97,7 +100,7 @@
           <span class="go muted">En camino</span>
         </div>
 
-        <div class="card mist subject">
+        <div class="card mist subject" data-reveal style="--i:1">
           <div class="top">
             <span class="tag volt">Ganada ✓</span>
             <span class="mono-label">05</span>
@@ -109,7 +112,7 @@
           <span class="go muted">—</span>
         </div>
 
-        <div class="card subject" style="background:transparent;border:1.5px dashed var(--ash)">
+        <div class="card subject" data-reveal style="--i:2;background:transparent;border:1.5px dashed var(--ash)">
           <div class="top"><span class="mono-label">+</span></div>
           <div>
             <h3 style="color:var(--smoke)">Más<br>repasos</h3>
@@ -121,21 +124,21 @@
     </section>
 
     <section>
-      <div class="card dark arc" style="padding:64px 40px 40px">
+      <div class="card dark arc" data-panel style="padding:64px 40px 40px">
         <span class="mono-label" style="color:var(--smoke)">Cómo funciona</span>
         <h2 class="display-md" style="margin:16px 0 40px">Tres formas de repasar</h2>
         <div class="how">
-          <div class="card" style="background:var(--graphite);color:var(--white)">
+          <div class="card" data-reveal style="--i:0;background:var(--graphite);color:var(--white)">
             <span class="num">01</span>
             <h4>Quiz</h4>
             <p style="color:var(--smoke)">Una pregunta a la vez, con corrección inmediata, explicación y puntaje al final.</p>
           </div>
-          <div class="card" style="background:var(--graphite);color:var(--white)">
+          <div class="card" data-reveal style="--i:1;background:var(--graphite);color:var(--white)">
             <span class="num">02</span>
             <h4>Estudio</h4>
             <p style="color:var(--smoke)">Todas las preguntas en lista, con la respuesta correcta resaltada para leer de corrido.</p>
           </div>
-          <div class="card" style="background:var(--graphite);color:var(--white)">
+          <div class="card" data-reveal style="--i:2;background:var(--graphite);color:var(--white)">
             <span class="num">03</span>
             <h4>Resumen</h4>
             <p style="color:var(--smoke)">Tabla de conceptos clave para la última pasada antes del examen.</p>
@@ -151,5 +154,6 @@
       <span class="mono">Hecho para estudiar, no para copiar.</span>
     </div>
   </footer>
+  <script src="assets/motion.js"></script>
 </body>
 </html>
